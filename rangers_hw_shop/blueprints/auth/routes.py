@@ -45,7 +45,7 @@ def signup():
         db.session.add(user)
         db.session.commit()
 
-        flash (f"You have successfully registered user {username}", category='success')
+        flash (f" You have successfully registered user {username}", category='success')
         return redirect('/') # we will add signin here
 
     return render_template('sign_up.html', form=registerform)  
