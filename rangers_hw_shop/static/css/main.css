@@ -1,0 +1,13 @@
+ /* CSS for the car shop page */
+ 
+ .car_shop-header{
+    background-image: url('https://getwallpapers.com/wallpaper/full/d/b/3/1100206-exotic-cars-wallpapers-1920x1080-hd-for-mobile.jpg');
+    background-size: cover;
+    height: 700px;
+    color: white;    
+}
+
+.car_shop-stats{
+    color: white
+}
+

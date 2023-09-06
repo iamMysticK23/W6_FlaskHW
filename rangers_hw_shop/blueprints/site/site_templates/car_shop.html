@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container-fluid justify-content-center">
+    <div class="row car_shop-header p-5">
+        <div class="col-3 d-flex flex-column justify-content-center bg-dark opacity-75">
+            <h2 align="center">Welcome to the Car Inventory Shop</h2>
+            <h5 align="center">All of your cars will show up here</h5>
+            <a href="#" class="btn btn-outline-warning  mt-3">Create new cars for your collection.</a>
+        </div>
+    </div>
+</div>
+<div class="row bg-dark p-3 car_shop-stats">
+
+    <!-- Query database for this information-->
+    <div class="col d-flex-justify-content-center">Total # of Customers</div>
+    <div class="col d-flex-justify-content-center">Total Car Sales: $</div>
+    <div class="col d-flex-justify-content-center">Total # of Cars</div>
+</div>
+
+<!-- Cars will be below -->
+
+{% endblock content %}
