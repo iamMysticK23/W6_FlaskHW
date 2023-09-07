@@ -7,11 +7,19 @@
     color: white;    
 }
 
-.car_shop-stats{
+.car_shop-stats {
     color: white
 }
 
 body {
-    background-color: rgb(238, 238, 238);
+    background-color: rgb(183, 183, 183);
 }
 
+.nav-link {
+    color: white;
+
+}
+
+.nav-link:hover {
+    color: rgb(244, 191, 19) ;
+}

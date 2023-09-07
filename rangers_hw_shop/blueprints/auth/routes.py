@@ -27,6 +27,7 @@ def signup():
         email = registerform.email.data
         password = registerform.password.data
         print(email, password)
+        
     # check the database for same username and/or email
     # Query the database
 
@@ -46,6 +47,38 @@ def signup():
         db.session.commit()
 
         flash (f" You have successfully registered user {username}", category='success')
-        return redirect('/') # we will add signin here
+        return redirect('/signin') # we will add signin here
 
     return render_template('sign_up.html', form=registerform)  
+
+
+# sign in route 
+@auth.route('/signin', methods = ['GET', 'POST'])
+def signin():
+
+    loginform = LoginForm()
+
+    if request.method == 'POST' and loginform.validate_on_submit():
+        email = loginform.email.data
+        password = loginform.password.data
+        print(email, password)
+
+        user = User.query.filter(User.email == email).first()
+        print(user)
+
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            flash(f" {email} has been logged in successfully.", category ='success')
+            return redirect('/')
+        else:
+            flash(f" Invalid email and/or password. Please try again.", category='warning')
+            return redirect('/signin')
+        
+    return render_template('sign_in.html', form=loginform)
+
+
+# sign out route
+@auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')

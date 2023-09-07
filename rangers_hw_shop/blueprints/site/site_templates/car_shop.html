@@ -4,13 +4,23 @@
 {% block content %}
 
 <div class="container-fluid justify-content-center">
-    <div class="row car_shop-header p-5">
-        <div class="col-3 d-flex flex-column justify-content-center bg-dark opacity-75">
-            <h2 align="center">VIEW OUR INVENTORY</h2>
-            <a href="#" class="btn btn-outline-warning  mt-3">Create new cars for your collection.</a>
+    <div class="row car_shop-header align-items-start p-5">
+        <div class="col-3 d-flex flex-column-reverse justify-content-center bg-dark opacity-75">
+            <!-- <h2 class="text-center">VIEW YOUR CARS</h2> -->
+
+            <!-- authenticate user-->
+            {% if current_user.is_authenticated %}
+            <h2 class="text-center">VIEW COLLECTION BELOW</h2>
+            <a href="{{url_for('site.create' )}}" class="btn btn-outline-warning  mt-3">Add cars to your collection.</a>
+            {% else %}
+            <h3 class="text-center text-warning">LOG IN TO ACCOUNT</h3>
+            <a href="/signin" class="btn btn-outline-warning  mt-3">Log In</a>
+            {% endif %}
         </div>
     </div>
 </div>
+
+{% if current_user.is_authenticated %}
 <div class="row bg-dark p-3 car_shop-stats">
 
     <!-- Query database for this information-->
@@ -20,5 +30,41 @@
 </div>
 
 <!-- Cars will be below -->
+{% for product in shop %}
+    <div class="row mt-5 mb-5 justify-content-center">
+        <div class="card d-flex rounded shadow flex-row w-50 p-3">
+            <div class="d-flex-align-items-center" style="max-width:210px">
+                <img src="{{ product.image }}" class="img-fluid rounded " alt="Car Image">
+            </div>
+            <div class="card-body d-flex flex-column justify-content-center p-4">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Price: ${{ product.price }}</li>
+                    <li class="list-group-item">Quantity: {{ product.quantity }}</li>
+                    {% if product.quantity <=10 %}
+                        <span class='err-msg btn-danger p-3 opacity-50 rounded'> ALERT: LOW INVENTORY</span>
+                    {% endif %}
+                </ul>
+                <div class="mt-2">
+                    <a href="{{ url_for('site.update', id=product.prod_id) }}" class="card-link btn btn-warning">Update</a>
+                    <a href="{{ url_for('site.delete', id=product.prod_id) }}" class="card-link btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>  
+{% endfor %}
+
+
+
+
+
+{% else %}
+<div class="row mt-5 mb-5 d-flex align-items-center">
+    <h3 class="d-flex text-center justify-content-center">YOUR INVENTORY WILL APPEAR AFTER LOGGING IN</h3>
+</div>
+{% endif %}
+
+
 
 {% endblock content %}
