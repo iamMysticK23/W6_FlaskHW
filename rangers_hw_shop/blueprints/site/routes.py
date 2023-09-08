@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect
 
 # internal imports
-from rangers_hw_shop.models import Product, db, product_schema, products_schema
+from rangers_hw_shop.models import Product, Customer, ProdOrder, Order, db, product_schema, products_schema
 from rangers_hw_shop.forms import ProductForm
 
 
@@ -16,8 +16,16 @@ def car_shop():
 
 
     shop = Product.query.all()
+    customers = Customer.query.all()
+    orders = Order.query.all()
 
-    return render_template('car_shop.html', shop=shop) # displays the car shop page
+    shop_stats = {
+        'products': len(shop),
+        'sales': sum([order.order_total for order in orders]),
+        'customers': len(customers)
+    }
+
+    return render_template('car_shop.html', shop=shop, stats=shop_stats) # displays the car shop page
 
 
 # create the CREATE route
@@ -28,7 +36,7 @@ def create():
 
     if request.method == 'POST' and createform.validate_on_submit():
 
-        try:
+        
             name = createform.name.data
             desc = createform.description.data
             image = createform.image.data
@@ -42,10 +50,7 @@ def create():
 
             flash(f" {name} added successfully.", category='success')
             return redirect('/')
-
-        except:
-            flash("Process could not be completed. Please try again.")
-            return redirect('/shop/create')
+    
         
     return render_template('create.html', form=createform)
 
@@ -58,6 +63,8 @@ def update(id):
     product = Product.query.get(id)
 
     if request.method == 'POST' and updateform.validate_on_submit():
+
+        
         try:
             product.name = updateform.name.data
             product.description = updateform.description.data
@@ -86,5 +93,7 @@ def delete(id):
     db.session.commit()
 
     return redirect('/')
+
+
 
 

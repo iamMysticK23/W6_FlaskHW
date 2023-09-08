@@ -1,6 +1,7 @@
 # Configuration for application
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 
 basedir = os.path.abspath(os.path.dirname(__file__)) #this is establishing our base directory or our root folder
@@ -24,3 +25,5 @@ class Config():
     SECRET_KEY = os.environ.get('SECRET_KEY') or "You will never have the key to life" # just needs to be a string 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False # hide update messages
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=365)

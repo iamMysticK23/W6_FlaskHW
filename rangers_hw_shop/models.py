@@ -61,6 +61,7 @@ class Product(db.Model):
     price = db.Column(db.Numeric(precision=10, scale=2), nullable = False)
     quantity = db.Column(db.Integer, nullable = False)
     date_added = db.Column(db.DateTime, default = datetime.utcnow)
+    prodord = db.relationship('ProdOrder', backref = 'product', lazy=True)
 
     # if a relationship with user was needed - ForeignKey
     # user_id = db.Column(db.String, dbForeignKey('user.user_id)'), nullable = False
@@ -79,10 +80,11 @@ class Product(db.Model):
     def set_image(self, image, name):
         if not image:
            image = get_image(name) # makes external API call
+           print("api image", image)
 
         return image
     
-    def decrement_quantity(self,quantity):
+    def decrement_quantity(self, quantity):
 
         self.quantity -= int(quantity)
         return self.quantity
@@ -94,6 +96,9 @@ class Product(db.Model):
     
     def __repr__(self):
         return f" <PRODUCT: {self.name}>"
+    
+
+
     
 class Customer(db.Model):
     cust_id = db.Column(db.String, primary_key = True)
@@ -132,8 +137,8 @@ class ProdOrder(db.Model):
 
     def set_price(self, price, quantity):
 
-        quantity = int(quantity)
-        price = int(price)
+        quantity = float(quantity)
+        price = float(price)
 
         self.price = quantity * price
         return self.price 
@@ -144,6 +149,9 @@ class ProdOrder(db.Model):
         self.quantity = int(quantity)
         return self.quantity
     
+
+
+
 
 class Order(db.Model):
     order_id = db.Column(db.String, primary_key = True)
@@ -177,6 +185,21 @@ class Order(db.Model):
 
 
         return self.order_total 
+    
+    # may need to comment this out
+    def calculate_order_total(self):
+        # Calculate the total order cost based on the items in the order
+        total = 0
+        for prodorder in self.products:
+            total += prodorder.price * prodorder.quantity
+
+        # Set the order total to 0 if there are no items in the order
+        if total == 0:
+            self.order_total = 0
+        else:
+            self.order_total = total
+
+        return self.order_total
     
     def __repr__(self):
 
