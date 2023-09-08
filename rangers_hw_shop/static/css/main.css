@@ -1,6 +1,6 @@
  /* CSS for the car shop page */
  
- .car_shop-header{
+.car_shop-header{
     background-image: url('https://getwallpapers.com/wallpaper/full/d/b/3/1100206-exotic-cars-wallpapers-1920x1080-hd-for-mobile.jpg');
     background-size: cover;
     height: 700px;
@@ -21,7 +21,7 @@ body {
     background-color: rgb(0, 0, 2);
 }
 
-.nav-link {
+.nav-link:a{
     color: white;
 
 }
@@ -56,3 +56,4 @@ a {
 a:hover {
     color: rgb(144, 124, 182);
 }
+
